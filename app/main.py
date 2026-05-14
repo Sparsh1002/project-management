@@ -1,5 +1,8 @@
 
+from unittest.mock import Base
+
 from fastapi import FastAPI
+from sqlalchemy import engine
 from app.api.routes import (
     auth,
     issue,
@@ -16,6 +19,7 @@ from app.middleware.auth_middleware import (
 )
 from seed import seed_data
 
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="Project Management Platform",
