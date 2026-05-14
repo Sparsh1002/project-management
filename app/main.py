@@ -1,8 +1,5 @@
 
-from unittest.mock import Base
-
 from fastapi import FastAPI
-from sqlalchemy import engine
 from app.api.routes import (
     auth,
     issue,
@@ -13,6 +10,7 @@ from app.api.routes import (
     watchers,
     notifications
 )
+from app.db.database import Base, engine
 from app.websocket.manager import websocket_router
 from app.middleware.auth_middleware import (
     auth_middleware
