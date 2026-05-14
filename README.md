@@ -17,7 +17,6 @@ This project supports:
 * Optimistic Locking
 * Seed Data
 * Dockerized Deployment
-* Railway Deployment Support
 
 ---
 
@@ -32,7 +31,7 @@ This project supports:
 | JWT        | Authentication        |
 | WebSockets | Realtime updates      |
 | Docker     | Containerization      |
-| Railway    | Deployment            |
+| Vercel     | Deployment            |
 
 ---
 
@@ -299,8 +298,8 @@ pip install -r requirements.txt
 Create `.env`
 
 ```env
-DATABASE_URL=postgresql://postgres:postgres@db:5432/jira_clone
-SECRET_KEY=super-secret-key
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/jira_db
+SECRET_KEY=swiggy
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=60
 ```
@@ -517,46 +516,12 @@ Invalid transitions return:
 }
 ```
 
----
-
-# Railway Deployment
-
-## 1. Push Code to GitHub
-
-## 2. Create Railway Project
-
-## 3. Add PostgreSQL Service
-
-## 4. Configure Environment Variables
-
 ```env
 DATABASE_URL=
 SECRET_KEY=
 ALGORITHM=
+ACCESS_TOKEN_EXPIRE_MINUTES=
 ```
-
-## 5. Deploy
-
-Railway automatically builds and deploys the Docker container.
-
----
-
-# Future Improvements
-
-Possible production enhancements:
-
-* Redis caching
-* Elasticsearch/OpenSearch
-* DB-driven workflow engine
-* Background jobs
-* Role-based permissions
-* File attachments
-* Advanced analytics
-* Presence tracking
-* Event replay system
-* Webhook integrations
-
----
 
 # Notes
 
