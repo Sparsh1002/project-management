@@ -15,6 +15,7 @@ ALGORITHM = os.getenv("ALGORITHM")
 
 
 PUBLIC_ROUTES = [
+    "/",
     "/auth/login",
     "/auth/register",
     "/health",

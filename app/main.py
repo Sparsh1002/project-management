@@ -1,5 +1,6 @@
 
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 from app.api.routes import (
     auth,
     issue,
@@ -35,6 +36,12 @@ app.include_router(search.router)
 app.include_router(watchers.router)
 app.include_router(notifications.router)
 app.include_router(websocket_router)
+
+@app.get("/")
+def root():
+    return RedirectResponse(
+        url="/docs"
+    )
 
 @app.get("/health")
 def health():
