@@ -1,7 +1,14 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import (
+    APIRouter,
+    HTTPException
+)
+
+from sqlalchemy.exc import SQLAlchemyError
 
 from app.db.database import SessionLocal
+
 from app.models.user import User
+
 from app.schemas.auth import (
     RegisterRequest,
     LoginRequest
@@ -31,6 +38,7 @@ def register(payload: RegisterRequest):
         ).first()
 
         if existing:
+
             raise HTTPException(
                 status_code=400,
                 detail="User already exists"
@@ -47,7 +55,9 @@ def register(payload: RegisterRequest):
         )
 
         db.add(user)
+
         db.commit()
+
         db.refresh(user)
 
         return {
@@ -55,12 +65,39 @@ def register(payload: RegisterRequest):
             "user_id": user.id
         }
 
+    except HTTPException:
+
+        raise
+
+    except SQLAlchemyError:
+
+        db.rollback()
+
+        raise HTTPException(
+            status_code=500,
+            detail="Database error occurred"
+        )
+
+    except Exception as error:
+
+        db.rollback()
+
+        raise HTTPException(
+            status_code=500,
+            detail=str(error)
+        )
+
     finally:
+
         db.close()
 
 
 @router.post("/login")
 def login(payload: LoginRequest):
+    '''
+    Default password used is Admin1234
+    Use 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6InNwYXJzaGxvZGhhMDRAZ21haWwuY29tIiwiZXhwIjo1Mzc4NzQxMDY1fQ.RzVjTLWel5TM9Y8CYiSD7mbHkFqkJ5KLuXmowU6EdjE' for token for testing
+    '''
 
     db = SessionLocal()
 
@@ -71,6 +108,7 @@ def login(payload: LoginRequest):
         ).first()
 
         if not user:
+
             raise HTTPException(
                 status_code=401,
                 detail="Invalid email or password"
@@ -82,6 +120,7 @@ def login(payload: LoginRequest):
         )
 
         if not is_valid_password:
+
             raise HTTPException(
                 status_code=401,
                 detail="Invalid email or password"
@@ -102,5 +141,24 @@ def login(payload: LoginRequest):
             }
         }
 
+    except HTTPException:
+
+        raise
+
+    except SQLAlchemyError:
+
+        raise HTTPException(
+            status_code=500,
+            detail="Database error occurred"
+        )
+
+    except Exception as error:
+
+        raise HTTPException(
+            status_code=500,
+            detail=str(error)
+        )
+
     finally:
+
         db.close()

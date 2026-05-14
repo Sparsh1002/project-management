@@ -34,22 +34,24 @@ def seed_data():
 
         print("Creating seed data...")
 
+
+        # pass is Admin1234
         user_1 = User(
             name="sparsh",
-            email="sparshlodha04@@gmail.com",
-            hashed_password="demo-password"
+            email="sparshlodha04@gmail.com",
+            hashed_password="$2b$12$wbEA70N5GZp.VeEfHove.OvbCu7YTdBGatCWhOiwVw9ZlkojuJUK6"
         )
 
         user_2 = User(
             name="alice",
             email="alice@example.com",
-            hashed_password="demo-password"
+            hashed_password="$2b$12$wbEA70N5GZp.VeEfHove.OvbCu7YTdBGatCWhOiwVw9ZlkojuJUK6"
         )
 
         user_3 = User(
             name="bob",
             email="bob@example.com",
-            hashed_password="demo-password"
+            hashed_password="$2b$12$wbEA70N5GZp.VeEfHove.OvbCu7YTdBGatCWhOiwVw9ZlkojuJUK6"
         )
 
         db.add_all([
