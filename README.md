@@ -516,13 +516,6 @@ Invalid transitions return:
 }
 ```
 
-```env
-DATABASE_URL=
-SECRET_KEY=
-ALGORITHM=
-ACCESS_TOKEN_EXPIRE_MINUTES=
-```
-
 # Notes
 
 This project was intentionally designed with:
