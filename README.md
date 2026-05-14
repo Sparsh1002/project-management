@@ -217,12 +217,12 @@ app/
 │   ├── comment.py
 │   ├── issue.py
 │   ├── project.py
+│   ├── search.py
 │   └── sprint.py
 │
 ├── utils/
-│   ├── jwt.py
 │   ├── mentions.py
-│   └── password.py
+│   └── security.py
 │
 ├── websocket/
 │   └── manager.py

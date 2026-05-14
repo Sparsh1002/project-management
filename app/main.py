@@ -16,7 +16,7 @@ from app.websocket.manager import websocket_router
 from app.middleware.auth_middleware import (
     auth_middleware
 )
-from seed import seed_data
+from app.db.seed import seed_data
 
 Base.metadata.create_all(bind=engine)
 
