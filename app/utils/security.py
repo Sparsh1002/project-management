@@ -2,7 +2,6 @@ from datetime import datetime, timedelta, timezone
 import os
 import bcrypt
 from jose import jwt
-from passlib.context import CryptContext
 from fastapi.security import HTTPBearer
 
 
@@ -15,10 +14,6 @@ ALGORITHM = os.getenv("ALGORITHM")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
 security = HTTPBearer()
-pwd_context = CryptContext(
-    schemes=["bcrypt"],
-    deprecated="auto"
-)
 
 
 def hash_password(password: str) -> str:
