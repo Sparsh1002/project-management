@@ -1,12 +1,15 @@
 from fastapi import (
     APIRouter,
+    Depends,
     Request,
     HTTPException
 )
+from fastapi.security import HTTPAuthorizationCredentials
 
 from app.db.database import SessionLocal
 
 from app.models.notification import Notification
+from app.utils.security import security
 
 router = APIRouter(
     prefix="/notifications",
@@ -16,7 +19,8 @@ router = APIRouter(
 
 @router.get("/")
 def get_notifications(
-    request: Request
+    request: Request,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
 ):
 
     db = SessionLocal()
@@ -39,7 +43,8 @@ def get_notifications(
 @router.patch("/{notification_id}/read")
 def mark_notification_read(
     notification_id: int,
-    request: Request
+    request: Request,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
 ):
 
     db = SessionLocal()

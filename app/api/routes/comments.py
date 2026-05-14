@@ -1,8 +1,10 @@
 from fastapi import (
     APIRouter,
+    Depends,
     HTTPException,
     Request
 )
+from fastapi.security import HTTPAuthorizationCredentials
 
 from app.db.database import SessionLocal
 
@@ -13,6 +15,7 @@ from app.models.activity_log import ActivityLog
 from app.schemas.comment import (
     AddCommentRequest
 )
+from app.utils.security import security
 from app.utils.mentions import create_mention_notifications
 
 router = APIRouter(
@@ -22,7 +25,7 @@ router = APIRouter(
 
 
 @router.get("/{issue_id}/comments")
-def list_issue_comments(issue_id: int):
+def list_issue_comments(issue_id: int, credentials: HTTPAuthorizationCredentials = Depends(security)):
 
     db = SessionLocal()
 
@@ -54,7 +57,7 @@ def list_issue_comments(issue_id: int):
 def add_comment(
     issue_id: int,
     payload: AddCommentRequest,
-    request: Request
+    credentials: HTTPAuthorizationCredentials = Depends(security)
 ):
 
     db = SessionLocal()

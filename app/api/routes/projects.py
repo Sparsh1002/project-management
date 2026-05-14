@@ -1,5 +1,6 @@
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import HTTPAuthorizationCredentials
 
 from app.db.database import SessionLocal
 from app.models.activity_log import ActivityLog
@@ -7,6 +8,7 @@ from app.models.issue import Issue
 from app.models.project import Project
 from app.models.sprint import Sprint
 from app.schemas.project import CreateProjectRequest
+from app.utils.security import security
 
 router = APIRouter(
     prefix="/projects",
@@ -14,7 +16,7 @@ router = APIRouter(
 )
 
 @router.post("/")
-def create_project(payload: CreateProjectRequest):
+def create_project(payload: CreateProjectRequest, credentials: HTTPAuthorizationCredentials = Depends(security)):
 
     db = SessionLocal()
 
@@ -29,13 +31,13 @@ def create_project(payload: CreateProjectRequest):
     return project
 
 @router.get("/")
-def list_projects():
+def list_projects(credentials: HTTPAuthorizationCredentials = Depends(security)):
     db = SessionLocal()
 
     return db.query(Project).all()
 
 @router.get("/{project_id}/sprints")
-def list_project_sprints(project_id: int):
+def list_project_sprints(project_id: int, credentials: HTTPAuthorizationCredentials = Depends(security)):
 
     db = SessionLocal()
 
@@ -66,7 +68,8 @@ def list_project_sprints(project_id: int):
 def get_project_activity(
     project_id: int,
     limit: int = 20,
-    offset: int = 0
+    offset: int = 0,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
 ):
 
     db = SessionLocal()
@@ -105,7 +108,7 @@ def get_project_activity(
         db.close()
 
 @router.get("/{project_id}/board")
-def get_board_state(project_id: int):
+def get_board_state(project_id: int, credentials: HTTPAuthorizationCredentials = Depends(security)):
 
     db = SessionLocal()
 

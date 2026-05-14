@@ -1,7 +1,9 @@
 from fastapi import (
     APIRouter,
+    Depends,
     HTTPException
 )
+from fastapi.security import HTTPAuthorizationCredentials
 
 from app.db.database import SessionLocal
 
@@ -11,6 +13,7 @@ from app.models.issue import Issue
 from app.schemas.sprint import (
     CreateSprintRequest
 )
+from app.utils.security import security
 
 router = APIRouter(
     prefix="/sprints",
@@ -20,7 +23,8 @@ router = APIRouter(
 
 @router.post("/")
 def create_sprint(
-    payload: CreateSprintRequest
+    payload: CreateSprintRequest,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
 ):
 
     db = SessionLocal()
@@ -44,7 +48,7 @@ def create_sprint(
 
 
 @router.post("/{sprint_id}/start")
-def start_sprint(sprint_id: int):
+def start_sprint(sprint_id: int, credentials: HTTPAuthorizationCredentials = Depends(security)):
 
     db = SessionLocal()
 
@@ -81,7 +85,7 @@ def start_sprint(sprint_id: int):
 
 
 @router.post("/{sprint_id}/complete")
-def complete_sprint(sprint_id: int):
+def complete_sprint(sprint_id: int, credentials: HTTPAuthorizationCredentials = Depends(security)):
 
     db = SessionLocal()
 
@@ -149,7 +153,8 @@ def complete_sprint(sprint_id: int):
 @router.post("/{sprint_id}/issues/{issue_id}")
 def move_issue_to_sprint(
     sprint_id: int,
-    issue_id: int
+    issue_id: int,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
 ):
 
     db = SessionLocal()

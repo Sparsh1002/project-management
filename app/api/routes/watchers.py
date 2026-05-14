@@ -1,13 +1,16 @@
 from fastapi import (
     APIRouter,
+    Depends,
     HTTPException,
     Request
 )
+from fastapi.security import HTTPAuthorizationCredentials
 
 from app.db.database import SessionLocal
 
 from app.models.issue import Issue
 from app.models.watcher import Watcher
+from app.utils.security import security
 
 router = APIRouter(
     prefix="/issues",
@@ -18,7 +21,8 @@ router = APIRouter(
 @router.post("/{issue_id}/watch")
 def watch_issue(
     issue_id: int,
-    request: Request
+    request: Request,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
 ):
 
     db = SessionLocal()
@@ -70,7 +74,8 @@ def watch_issue(
 @router.delete("/{issue_id}/watch")
 def unwatch_issue(
     issue_id: int,
-    request: Request
+    request: Request,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
 ):
 
     db = SessionLocal()

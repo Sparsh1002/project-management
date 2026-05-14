@@ -2,9 +2,11 @@
 import asyncio
 from fastapi import (
     APIRouter,
+    Depends,
     HTTPException,
     Request
 )
+from fastapi.security import HTTPAuthorizationCredentials
 
 from app.db.database import SessionLocal
 
@@ -17,6 +19,7 @@ from app.schemas.issue import (
     UpdateIssueRequest,
     TransitionIssueRequest
 )
+from app.utils.security import security
 from app.websocket.manager import (
     broadcast_event
 )
@@ -38,7 +41,8 @@ VALID_TRANSITIONS = {
 def create_issue(
     project_id: int,
     payload: CreateIssueRequest,
-    request: Request
+    request: Request,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
 ):
     db = SessionLocal()
 
@@ -131,7 +135,8 @@ def create_issue(
 @router.patch("/{issue_id}")
 def update_issue(
     issue_id: int,
-    payload: UpdateIssueRequest
+    payload: UpdateIssueRequest,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
 ):
 
     db = SessionLocal()
@@ -207,7 +212,8 @@ def update_issue(
 @router.post("/{issue_id}/transitions")
 def transition_issue(
     issue_id: int,
-    payload: TransitionIssueRequest
+    payload: TransitionIssueRequest,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
 ):
 
     db = SessionLocal()

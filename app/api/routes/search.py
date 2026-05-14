@@ -1,11 +1,13 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
+from fastapi.security import HTTPAuthorizationCredentials
 from sqlalchemy import or_
 
 from app.db.database import SessionLocal
 
 from app.models.issue import Issue
 from app.models.comment import Comment
+from app.utils.security import security
 
 router = APIRouter(
     prefix="/search",
@@ -20,7 +22,8 @@ def search_issues(
     priority: str | None = None,
     assignee_id: int | None = None,
     limit: int = 20,
-    offset: int = 0
+    offset: int = 0,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
 ):
 
     db = SessionLocal()
