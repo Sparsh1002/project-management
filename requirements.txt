@@ -9,4 +9,3 @@ passlib[bcrypt]
 alembic
 pydantic
 websockets
-psycopg2
